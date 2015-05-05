@@ -48,8 +48,8 @@
     In addition to providing the parameters for this script/runbook, you can customize MySQL my.cnf file to your needs. You can 
     leave cluster address, node address and node name empty in your template as these will be replaced by the VM extension script, 
     everything else can be customized.  By default, the VM extension script is located at 
-    https://raw.githubusercontent.com/liupeirong/Azure/master/DeployPXC/azurepxc.sh, and the my.cnf template is located at 
-    https://raw.githubusercontent.com/liupeirong/Azure/master/DeployPXC/my.cnf.template.  You can copy them to another location,
+    https://raw.githubusercontent.com/jferrer-vhm/Azure-Automations/master/DeployPXC/azurepxc.sh, and the my.cnf template is located at 
+    https://raw.githubusercontent.com/jferrer-vhm/Azure-Automations/master/DeployPXC/my.cnf.template.  You can copy them to another location,
     provide your own customization, and then specify their location in the parameters of this script/runbook. 
 
 .EXAMPLE
@@ -101,9 +101,9 @@ param (
         [parameter(Mandatory=$true)]
         [String]$VMPassword, #the password for the ssh user
         [parameter(Mandatory=$false)]
-        [String]$VMExtLocation = "https://raw.githubusercontent.com/liupeirong/Azure/master/DeployPXC/azurepxc.sh", #the location of the VM extension script that will run as part of the cluster node creation
+        [String]$VMExtLocation = "https://raw.githubusercontent.com/jferrer-vhm/Azure-Automations/master/DeployPXC/azurepxc.sh", #the location of the VM extension script that will run as part of the cluster node creation
         [parameter(Mandatory=$false)]
-        [String]$MyCnfLocation = "https://raw.githubusercontent.com/liupeirong/Azure/master/DeployPXC/my.cnf.template", #the location of MySQL my.cnf template, IP and hostname will be substituted by the script, you configure everything else to your liking
+        [String]$MyCnfLocation = "https://raw.githubusercontent.com/jferrer-vhm/Azure-Automations/master/DeployPXC/my.cnf.template", #the location of MySQL my.cnf template, IP and hostname will be substituted by the script, you configure everything else to your liking
         [parameter(Mandatory=$false)]
         [String]$SecondNICName,  #this indicates the need for 2nd NIC. leave this empty if you don't have 2nd NIC, all other 2nd NIC settings will have no effect if this is empty
         [parameter(Mandatory=$false)]
