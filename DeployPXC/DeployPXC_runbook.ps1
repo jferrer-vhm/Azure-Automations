@@ -112,7 +112,9 @@ workflow DeployPXC {
         [parameter(Mandatory=$false)]
         [String]$SecondNICIPs, #the IPs of the second NIC of the cluster nodes, comma separated, ex: "10.1.0.1,10.1.0.2,10.1.0.3"
         [parameter(Mandatory=$false)]
-        [String]$PrivateVMExtConfig  #leave this empty if your VM extension script is publicly accessible
+        [String]$PrivateVMExtConfig,  #leave this empty if your VM extension script is publicly accessible
+	[parameter(Mandatory=$false)]
+        [String]$NewRelicLicense = 0  #leave 0 to forgo NewRelic
     )
 
 $cred = Get-AutomationPSCredential -Name $CredentialName
@@ -372,6 +374,7 @@ function deployCluster
             $extParams += "start "
         }
         $extParams += $MyCnfLocation + " "
+        $extParams += $NewRelicLicense
         $extParams += $SECONDNICName
         $PublicVMExtConfig = '{"fileUris":["' + $VMExtLocation +'"], "commandToExecute": "bash azurepxc.sh ' + $extParams + '" }' 
         if ($PrivateVMExtConfig -and $PrivateVMExtConfig -ne "")

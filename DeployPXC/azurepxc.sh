@@ -12,7 +12,8 @@ NODEADDRESS=${2}
 NODENAME=$(hostname)
 MYSQLSTARTUP=${3}
 MYCNFTEMPLATE=${4}
-SECONDNIC=${5}
+NEWRELICLICENSE=${5}
+SECONDNIC=${6}
 
 MOUNTPOINT="/datadrive"
 RAIDCHUNKSIZE=512
@@ -297,6 +298,38 @@ configure_mysql() {
     fi
 }
 
+configure_newrelic() {
+    if [ 0 -neq "$NEWRELICLICENSE" ];
+    then
+	if [ $iscentos -eq 0 ];
+   	then
+       		install_newrelic_centos
+    	elif [ $isubuntu -eq 0 ];
+    	then
+        	install_newrelic_ubuntu
+    	fi
+
+	# Configure the license key
+	nrsysmond-config --set license_key=$NEWRELICLICENSE
+
+	# Start New Relic
+	/etc/init.d/newrelic-sysmond start
+    fi
+}
+
+install_newrelic_centos() {
+	rpm -Uvh https://yum.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm
+	yum install newrelic-sysmond
+}
+
+install_newrelic_ubunutu() {
+	sh -c 'echo deb http://apt.newrelic.com/debian/ newrelic non-free >> /etc/apt/sources.list.d/newrelic.list'
+	wget -O- https://download.newrelic.com/548C16BF.gpg | apt-key add -
+	apt-get -y update
+	apt-get -y install newrelic-sysmond
+}
+
+
 allow_passwordssh() {
 	grep -q '^PasswordAuthentication yes' /etc/ssh/sshd_config
     if [ ${?} -eq 0 ];
@@ -320,5 +353,6 @@ else
     configure_network
     configure_disks
     configure_mysql
+    configure_newrelic
 fi
 
